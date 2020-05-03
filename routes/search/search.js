@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
       KEY: key,
       Type: "json",
       SCHUL_NM: school_name,
-      pSize: 800
+      pSize: 1000
     }
   });
 
@@ -34,22 +34,24 @@ module.exports = async (req, res) => {
   let schoolList = [];
 
   const data = schoolApi.data.schoolInfo;
-  const listLength = parseInt(data[0].head[0].list_total_count);
+  const listLength = data[0].head[0].list_total_count;
 
   for (let i = 0; i < listLength; i++) {
-    schoolList.push({
-      school_name: data[1].row[i].SCHUL_NM, //학교 이름
-      school_locate: data[1].row[i].ORG_RDNMA, //도로명 주소
-      office_code: data[1].row[i].ATPT_OFCDC_SC_CODE, //시도 교육청 코드
-      school_id: data[1].row[i].SD_SCHUL_CODE //표준 학교 코드
-    });
+    if (data[1].row[i]) {
+      schoolList.push({
+        school_name: data[1].row[i].SCHUL_NM, //학교 이름
+        school_locate: data[1].row[i].ORG_RDNMA, //도로명 주소
+        office_code: data[1].row[i].ATPT_OFCDC_SC_CODE, //시도 교육청 코드
+        school_id: data[1].row[i].SD_SCHUL_CODE //표준 학교 코드
+      });
+    }
   }
 
   return res.status(200).json({
     status: 200,
     message: "학교 조회 성공",
     data: {
-      schoolList
+      school: schoolList
     }
   });
 };
