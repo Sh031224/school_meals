@@ -15,15 +15,18 @@ exports.getSchedule = async (req, res) => {
     });
   }
 
-  const scheduleApi = await axios.get("http://open.neis.go.kr/hub/SchoolSchedule", {
-    params: {
-      KEY: key,
-      Type: "json",
-      SD_SCHUL_CODE: school_id,
-      ATPT_OFCDC_SC_CODE: office_code,
-      AA_YMD: date
+  const scheduleApi = await axios.get(
+    "http://open.neis.go.kr/hub/SchoolSchedule",
+    {
+      params: {
+        KEY: key,
+        Type: "json",
+        SD_SCHUL_CODE: school_id,
+        ATPT_OFCDC_SC_CODE: office_code,
+        AA_YMD: date
+      }
     }
-  });
+  );
 
   if (scheduleApi.data.RESULT) {
     if (scheduleApi.data.RESULT !== "INFO-000") {
@@ -65,15 +68,18 @@ exports.getTodaySchedule = async (req, res) => {
     });
   }
 
-  const scheduleApi = await axios.get("http://open.neis.go.kr/hub/SchoolSchedule", {
-    params: {
-      KEY: key,
-      Type: "json",
-      SD_SCHUL_CODE: school_id,
-      ATPT_OFCDC_SC_CODE: office_code,
-      AA_YMD: date
+  const scheduleApi = await axios.get(
+    "http://open.neis.go.kr/hub/SchoolSchedule",
+    {
+      params: {
+        KEY: key,
+        Type: "json",
+        SD_SCHUL_CODE: school_id,
+        ATPT_OFCDC_SC_CODE: office_code,
+        AA_YMD: date
+      }
     }
-  });
+  );
 
   if (scheduleApi.data.RESULT) {
     if (scheduleApi.data.RESULT !== "INFO-000") {
