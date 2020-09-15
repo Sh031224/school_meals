@@ -15,15 +15,18 @@ exports.getMeals = async (req, res) => {
     });
   }
 
-  const mealsApi = await axios.get("http://open.neis.go.kr/hub/mealServiceDietInfo", {
-    params: {
-      KEY: key,
-      Type: "json",
-      SD_SCHUL_CODE: school_id,
-      ATPT_OFCDC_SC_CODE: office_code,
-      MLSV_YMD: date
+  const mealsApi = await axios.get(
+    "http://open.neis.go.kr/hub/mealServiceDietInfo",
+    {
+      params: {
+        KEY: key,
+        Type: "json",
+        SD_SCHUL_CODE: school_id,
+        ATPT_OFCDC_SC_CODE: office_code,
+        MLSV_YMD: date
+      }
     }
-  });
+  );
 
   if (mealsApi.data.RESULT) {
     if (mealsApi.data.RESULT !== "INFO-000") {
@@ -34,7 +37,8 @@ exports.getMeals = async (req, res) => {
     }
   }
 
-  meal = [];
+  let meal = [];
+  let calories = [];
 
   const mealData = mealsApi.data.mealServiceDietInfo[1].row;
 
@@ -49,6 +53,10 @@ exports.getMeals = async (req, res) => {
       });
     }
     meal[mealNum] = mealData[i].DDISH_NM.replace(/([0-9])+\./g, "");
+    calories[mealNum] = mealData[i].CAL_INFO;
+    if (!calories[i]) {
+      calories[i] = null;
+    }
     if (!meal[i]) {
       meal[i] = null;
     }
@@ -58,7 +66,8 @@ exports.getMeals = async (req, res) => {
     status: 200,
     message: "급식 조회 성공",
     data: {
-      meal
+      meal,
+      calories
     }
   });
 };
@@ -75,15 +84,18 @@ exports.getTodayMeals = async (req, res) => {
     });
   }
 
-  const mealsApi = await axios.get("http://open.neis.go.kr/hub/mealServiceDietInfo", {
-    params: {
-      KEY: key,
-      Type: "json",
-      SD_SCHUL_CODE: school_id,
-      ATPT_OFCDC_SC_CODE: office_code,
-      MLSV_YMD: today
+  const mealsApi = await axios.get(
+    "http://open.neis.go.kr/hub/mealServiceDietInfo",
+    {
+      params: {
+        KEY: key,
+        Type: "json",
+        SD_SCHUL_CODE: school_id,
+        ATPT_OFCDC_SC_CODE: office_code,
+        MLSV_YMD: today
+      }
     }
-  });
+  );
 
   if (mealsApi.data.RESULT) {
     if (mealsApi.data.RESULT !== "INFO-000") {
@@ -94,7 +106,8 @@ exports.getTodayMeals = async (req, res) => {
     }
   }
 
-  meal = [];
+  let meal = [];
+  let calories = [];
 
   const mealData = mealsApi.data.mealServiceDietInfo[1].row;
 
@@ -109,6 +122,10 @@ exports.getTodayMeals = async (req, res) => {
       });
     }
     meal[mealNum] = mealData[i].DDISH_NM.replace(/([0-9])+\./g, "");
+    calories[mealNum] = mealData[i].CAL_INFO;
+    if (!calories[i]) {
+      calories[i] = null;
+    }
     if (!meal[i]) {
       meal[i] = null;
     }
@@ -118,7 +135,8 @@ exports.getTodayMeals = async (req, res) => {
     status: 200,
     message: "급식 조회 성공",
     data: {
-      meal
+      meal,
+      calories
     }
   });
 };
